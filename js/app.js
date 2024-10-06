@@ -10,6 +10,11 @@ const feedBtnEl =document.querySelector('#feed');
 const sleepBtnEl =document.querySelector('#sleep');
 const resetBtnEl=document.querySelector('#restart');
 
+const gameMessageEl =document.querySelector('#message');
+
+console.log(resetBtnEl);
+
+
 
 
 /*---------------------------- Variables (state) ----------------------------*/
@@ -34,14 +39,14 @@ let gameOver;
 //gameMessageEl.classList.add('hidden');
 
 //messageEl.classList.remove('hidden');
-init();
+
 
 
 
 function updateStates(){
-    states.bordem=states.bordem+ Math.floor(Math.random() * 3);
-     states.hunger=states.hunger+ Math.floor(Math.random() * 3);
-    states.sleepiness=states.sleepiness+ Math.floor(Math.random() * 3);
+    states.bordem=states.bordem+ Math.floor(Math.random() * 4);
+     states.hunger=states.hunger+ Math.floor(Math.random() * 4);
+    states.sleepiness=states.sleepiness+ Math.floor(Math.random() * 4);
      
      }
 
@@ -52,38 +57,56 @@ function render(){
     sleepinessStatEl.innerText = states.sleepiness;
     hungerStatEl.innerText = states.hunger;
     boredomStatEl.innerText = states.bordem;
-    
+
+if (gameOver==='true'){
+  clearInterval(timer);
+  resetBtnEl.classList.remove('hidden');
+  gameMessageEl.classList.remove('hidden');
 }
 
+}
+
+
+function checkGameOver(){
+
+  if ( states.bordem === 10||states.hunger ===10||states.sleepiness === 10){
+
+gameOver='true';
+  }
+  
+
+}
 function init(){
 
-  
+    resetBtnEl.classList.add('hidden');
+    gameMessageEl.classList.add('hidden');
+
+
+    states.bordem = 0;
+    states.hunger = 0;
+    states.sleepiness = 0;
+    gameOver='false';
      timer = setInterval(runGame,2000);
-    gameOver=false;
+   
     runGame();
     render();
+
+
+ 
 }
 
-
+init();
 
 function runGame(){
    updateStates();
+   checkGameOver();
+   
    render();
 
 
 }
 
 
-function reset(){
-    init();
-
-    states.bordem = 0;
-    states.hunger = 0;
-    states.sleepiness = 0;
-    boredomStatEl.innerText = states.bordem;
-    hungerStatEl.innerText = states.hunger;
-    sleepinessStatEl.innerText = states.sleepiness;
-}
 //function render(){
     //let text = document.getElementById("divA").textContent;
 
@@ -132,23 +155,9 @@ feedBtnClick();
     sleepBtnClick();
  });
  
-    
-
- sleepBtnEl.addEventListener('click', (event) => {
 
 
-
-
- resetBtnEl.classList.add('hidden');
- gameMessageEl.classList.add('hidden');
- init();
-
-  
- });
-
- //resetBtnEl.addEventListener('click', init);
-
-
+resetBtnEl.addEventListener('click',()=>{init()});
 
 
 
